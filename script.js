@@ -5,7 +5,7 @@ let countriesData; // Holds the loaded dataset
 // Load the CSV file and start the visualization
 d3.csv("cleaned_world_pop.csv").then(data => {
   countriesData = data.map(d => ({
-    country: d["Country/Territory"],
+    country: d.Country,
     year: +d.Year,
     population: +d.Population
   }));
