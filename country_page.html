@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Martini Glass Narrative Visualization - Country Page</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.min.js"
+        integrity="sha512-iBAeBWWWFb8HqSBcrqcz98iIpuVH1la39dEYHtyQ/pGpeCQTQVvLJOWAuhv2Q7JSHp9k7hWA7sGxU3hHJe+tFg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <style>
+        /* Add any CSS specific to the country page here */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #country-page-title {
+            margin-top: 20px;
+        }
+
+        #chart-container {
+            margin: 20px;
+            max-width: 800px; /* Optionally set a max-width to limit the chart container width */
+            border: 1px solid #000000; /* Optional: Add a border to the chart container */
+            background-color: #daedf4;
+        }
+
+        #country-select {
+            margin: 10px;
+            padding: 5px;
+            font-size: 16px;
+        }
+
+        #back-button {
+            margin: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+        }
+
+        /* Style the drop-down arrow (optional) */
+        #country-select::after {
+            content: " ▼";
+            font-size: 12px;
+            padding-left: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2 id="country-page-title">Exploring Population Growth of Top Polluters from 1970 to 2022</h2>
+    <div id="chart-container"></div>
+    <div>
+        <label for="country-select">Select a Country:</label>
+        <select id="country-select">
+            <option value="Select a Country Below">SELECT A COUNTRY BELOW</option>
+            <option value="China">China</option>
+            <option value="United States">United States</option>
+            <option value="India">India</option>
+            <!-- Add options for other countries as needed -->
+        </select>
+    </div>
+    <button id="back-button">Back</button>
+    <script src="script.js"></script>
+</body>
+
+</html>
