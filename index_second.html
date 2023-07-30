@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Martini Glass Narrative Visualization - Introduction</title>
+    <!-- Add any CSS specific to the intro page here -->
+    <style>
+        /* Add styles specific to the intro page container here */
+        #bar-chart-container {
+            margin: 20px auto; /* Set the left and right margin to "auto" to center the container */
+            max-width: 500px; /* Optionally set a max-width to limit the container width */
+        }
+
+        /* Add styles specific to the message container here */
+        #message {
+            max-width: 800px; /* Optionally set a max-width to limit the container width */
+            margin: 0 auto; /* Center the container horizontally */
+            padding: 20px;
+        }
+
+        #back-button-scene2 {
+            margin: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+        }
+
+        #next-scene {
+            margin: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+        }
+
+        #button-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Center the button container */
+        #button-container {
+            margin: 20px auto;
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- Add the overarching message here -->
+    <div id="message">
+        <!-- Add your introductory content here -->
+        <h2>Exploring Population of Leading Polluters</h2>
+        <p>
+            The observation reveals a notable correlation between the world's top polluters and their respective
+            population sizes.
+            The bar chart depicting the population of these major polluters further emphasizes this connection.
+            Interestingly,
+            there is a slight deviation in the ranking order when comparing the United States and India.
+            Despite India having a larger population than the United States, the latter exhibits a higher pollution
+            rate.
+            While population size indeed plays a significant role in pollution, it is crucial to acknowledge that other
+            factors can contribute to this disparity.
+        </p>
+
+        <p>
+            One plausible explanation for the difference in pollution rates could be attributed to varying levels of
+            economic development,
+            as indicated by GDP. The United States, being a highly developed nation with a robust economy,
+            may have a more substantial industrial and manufacturing sector,
+            leading to increased pollution levels. Advanced industries and technologies in the United States could
+            result in
+            higher energy consumption and greater emissions compared to India. Additionally, variations in energy
+            sources and consumption patterns
+            could be influential factors. The United States might rely more heavily on carbon-intensive energy sources,
+            such as coal and oil, whereas India might be shifting towards cleaner energy alternatives.
+            Furthermore, differences in environmental policies, regulations, and enforcement could also
+            impact pollution levels in these countries.
+        </p>
+    </div>
+
+    <!-- Add the bar chart container -->
+    <div id="bar-chart-container">
+        <h3>Population Overview - 2019:</h3>
+        <svg id="bar-chart" width="500" height="300"></svg>
+    </div>
+
+    <!-- Add button container to center the buttons -->
+    <div id="button-container">
+        <button id="next-scene">Next</button>
+        <button id="back-button-scene2">Back</button>
+    </div>
+
+    <!-- Add any other content for the intro page here -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+        // Sample data for the bar chart (replace this with your actual data)
+        const barChartData = [
+            { Emiter: "China", Pop: 1.40 },
+            { Emiter: "India", Pop: 1.38 },
+            { Emiter: "USA", Pop: 0.328 }
+        ];
+
+        const barColors = ["#EE1C25", "#FF9933", "#0A3161"];
+
+        // Function to create the bar chart
+        function createBarChart(data) {
+            const svg = d3.select("#bar-chart");
+            const margin = { top: 40, right: 30, bottom: 60, left: 60 }; // Increased all margins to accommodate the titles
+            const width = 500 - margin.left - margin.right;
+            const height = 300 - margin.top - margin.bottom;
+
+            const xScale = d3.scaleBand()
+                .domain(data.map(d => d.Emiter))
+                .range([0, width])
+                .padding(0.1);
+
+            const yScale = d3.scaleLinear()
+                .domain([0, d3.max(data, d => d.Pop)])
+                .range([height, 0]);
+
+            const barGroup = svg.append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+
+            barGroup.selectAll(".bar")
+                .data(data)
+                .enter().append("rect")
+                .attr("class", "bar")
+                .attr("x", d => xScale(d.Emiter))
+                .attr("y", d => yScale(d.Pop))
+                .attr("width", xScale.bandwidth())
+                .attr("height", d => height - yScale(d.Pop))
+                .attr("fill", (d, i) => barColors[i]); // Assign different colors to each bar
+
+            barGroup.append("g")
+                .attr("transform", `translate(0,${height})`)
+                .call(d3.axisBottom(xScale))
+                .selectAll("text")
+                .style("text-anchor", "middle")
+                .attr("dy", "1em");
+
+            // Adding the Y-axis
+            barGroup.append("g")
+                .call(d3.axisLeft(yScale).ticks(5).tickFormat(d3.format(".2s")));
+
+            // Adding the X-axis title
+            svg.append("text")
+                .attr("transform", `translate(${(width / 2) + 40 },${height + margin.bottom + 20})`) // Adjusted Y position for X-axis title
+                .style("text-anchor", "middle")
+                .text("Emiter");
+
+            // Adding the Y-axis title
+            svg.append("text")
+                .attr("transform", `translate(${margin.left - 40},${height / 2}) rotate(-90)`) // Adjusted X position for Y-axis title
+                .style("text-anchor", "middle")
+                .text("CO2 Emissions");
+        }
+
+        // Call the function to create the bar chart with the sample data
+        createBarChart(barChartData);
+
+        // Add event listener for the "Next" button
+        const nextButton = document.getElementById("next-scene");
+        nextButton.addEventListener("click", function () {
+            // Move to the country page when the "Next" button is clicked
+            window.location.href = "country_page.html";
+        });
+
+        const backButtonScene2 = document.getElementById("back-button-scene2");
+        backButtonScene2.addEventListener("click", function () {
+            // Move back to the intro page when the "Back" button is clicked
+            window.location.href = "index_intro.html";
+        });
+    </script>
+</body>
+
+</html>
+
+
+
