@@ -2,6 +2,15 @@
 let currentScene = 0;
 let countriesData; // Holds the loaded dataset
 
+const countryColors = {
+  China: "#EE1C25",
+  India: "#FF9933",
+  "United States": "#0A3161",
+  // Add more countries and their corresponding colors as needed
+};
+
+
+
 // Load the CSV file and start the visualization
 d3.csv("cleaned_world_pop_2.csv").then(data => {
   console.log('data ===', data)
@@ -93,7 +102,7 @@ function renderPopulationLineChart() {
     .datum(dataForCountry)
     .attr("class", "line")
     .attr("fill", "none")
-    .attr("stroke", "steelblue")
+    .attr("stroke", countryColors[selectedCountry]) // Use the color corresponding to the selected country
     .attr("stroke-width", 2)
     .attr("d", line);
 
@@ -115,11 +124,35 @@ function renderPopulationLineChart() {
   // Add Y-axis label
   svg.append("text")
     .attr("transform", "rotate(-90)")
-    .attr("y", 0 - margin.left)
+    .attr("y", (0 - margin.left) - 65)
     .attr("x", 0 - (height / 2))
     .attr("dy", "5em")
     .style("text-anchor", "middle")
     .text("Population");
+
+
+    const annotation = [{
+      note: {
+        title: "China",
+        label: "Population: 1.23 billion",
+        wrap: 160
+      },
+      connector: {
+        type: "elbow",
+        end: "dot"
+      },
+      x: xScale(new Date(1993, 0, 1)),
+      y: yScale(1230000000),
+      dx: 20,
+      dy: -40
+    }];
+  
+    const makeAnnotations = d3.annotation().annotations(annotation);
+  
+    // Append annotations to the chart
+    svg.append("g")
+      .attr("class", "annotation-group")
+      .call(makeAnnotations);
 }
 
 
@@ -140,8 +173,8 @@ countrySelect.addEventListener("change", function () {
     .style("padding", "20px")
     .style("margin-bottom", "20px");
 
-    populateInfoDiv.append("p")
-    .text(`selected Country  ${this.value}`);
+    //populateInfoDiv.append("p")
+    //.text(`selected Country  ${this.value}`);
 });
 
 // Function to handle navigation to the next scene based on the selected country
@@ -159,5 +192,12 @@ function goToNextScene(selectedCountry) {
     renderScene(1);
   }
 }
+
+// Add event listener for the back button
+const backButton = document.getElementById("back-button");
+backButton.addEventListener("click", function () {
+  // Move back to the second page when the "Back" button is clicked
+  window.location.href = "index_second.html";
+});
 
 
