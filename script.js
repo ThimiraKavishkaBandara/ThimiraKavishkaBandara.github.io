@@ -83,9 +83,8 @@ function renderPopulationLineChart() {
   const yScale = d3.scaleLinear()
     .domain([0, d3.max(dataForCountry, d => d.population)])
     .range([height, 0]);
-
-  // Define the line
-  const line = d3.line()
+// new code
+    const line = d3.line()
     .x(d => xScale(d.year))
     .y(d => yScale(d.population));
 
@@ -105,7 +104,7 @@ function renderPopulationLineChart() {
 
   // Add the Y-axis
   svg.append("g")
-    .call(d3.axisLeft(yScale));
+    .call(d3.axisLeft(yScale).ticks(5).tickFormat(d3.format(".2s"))); // Adjust the number of ticks and format
 
   // Add X-axis label
   svg.append("text")
@@ -122,6 +121,7 @@ function renderPopulationLineChart() {
     .style("text-anchor", "middle")
     .text("Population");
 }
+
 
 // Add event listener for the country dropdown
 const countrySelect = document.getElementById("country-select");
